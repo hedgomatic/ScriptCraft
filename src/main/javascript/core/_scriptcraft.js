@@ -20,7 +20,7 @@
 */
 var global = this;
 var verbose = verbose || false;
-//
+//''
 // private implementation
 //
 (function(){
@@ -65,6 +65,7 @@ var verbose = verbose || false;
             if (warnOnFileNotFound) 
                 __plugin.logger.warning(canonizedFilename + " not found");
         }
+
         return result;
     };
     /*
@@ -108,7 +109,16 @@ var verbose = verbose || false;
         // as dependencies by myMiniGame.js and do not need to be loaded via js reload
         //
         for (var i = 0;i < jsFiles.length; i++){
+            print(jsFiles[i]);
             load(_canonize(jsFiles[i]),true);
+        }
+
+        // 
+        // all modules have loaded
+        //
+        for (var i =0;i < _deferred.length;i++) {
+        _deferred[i]();
+    
         }
     };
 
@@ -369,11 +379,6 @@ var verbose = verbose || false;
     //
     reload(jsPluginsRootDir);
 
-    // 
-    // all modules have loaded
-    //
-    for (var i =0;i < _deferred.length;i++)
-        _deferred[i]();
     
     events.on("server.PluginDisableEvent",function(l,e){
         //
